@@ -12,7 +12,7 @@ This project is using The Movie Dataset API
 <img src="screenshots/favourite%20films.png" height="600">
 <b>Film Details #1</b>
 <br>
-<img src="screenshots/film%20details#1.png">
+<img src="screenshots/film% details#1.png" height="600">
 <b>Film Details #2</b>
 <br>
 <img src="screenshots/film%20details#2.png" height="600">
