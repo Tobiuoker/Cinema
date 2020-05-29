@@ -1,4 +1,4 @@
-<h4>This is my Cinema app created for educational purposes.()</h4>
+<h4>This is my Cinema app created for educational purposes.(in progress)</h4>
 This project is using The Movie Dataset API
 <br>
 <b>Tab with popular films</b>
@@ -12,7 +12,7 @@ This project is using The Movie Dataset API
 <img src="screenshots/favourite%20films.png" height="600">
 <b>Film Details #1</b>
 <br>
-<img src="screenshots/film%20details#2.png" height="600">
+<img src="screenshots/film%20details#1.png" height="600">
 <b>Film Details #2</b>
 <br>
 <img src="screenshots/film%20details#2.png" height="600">
