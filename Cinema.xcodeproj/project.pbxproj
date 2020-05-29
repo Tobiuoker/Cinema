@@ -68,14 +68,38 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		956D08602481041E001E64AA /* controllers */ = {
+			isa = PBXGroup;
+			children = (
+				958EDFC1244851CC00005FA3 /* filmDetailViewController.swift */,
+				9567A37E2445D24100CDE79D /* FilmCollectionViewController.swift */,
+				957EFFA42442DBFC000836C3 /* StoreItemController.swift */,
+				9563693B24742C5900A02252 /* filmSearchCollectionViewController.swift */,
+				957EFFA62442DC75000836C3 /* CinemaTableViewController.swift */,
+				9509540F244C97B1003F1560 /* fullCrewTableViewController.swift */,
+			);
+			path = controllers;
+			sourceTree = "<group>";
+		};
+		956D086124810486001E64AA /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				957EFFA22442DBD8000836C3 /* URLHelper.swift */,
+			);
+			path = helpers;
+			sourceTree = "<group>";
+		};
+		956D0862248104A1001E64AA /* models */ = {
+			isa = PBXGroup;
+			children = (
+				957EFFA02442DBBF000836C3 /* StoreItem.swift */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
 		95B886EA24420855009ADD0D = {
 			isa = PBXGroup;
 			children = (
-				956369382474148D00A02252 /* database.xcdatamodeld */,
-				9509540F244C97B1003F1560 /* fullCrewTableViewController.swift */,
-				958EDFC1244851CC00005FA3 /* filmDetailViewController.swift */,
-				9567A3802445DBCE00CDE79D /* FilmCollectionViewCell.swift */,
-				9567A37E2445D24100CDE79D /* FilmCollectionViewController.swift */,
 				95B886F524420855009ADD0D /* Cinema */,
 				95B886F424420855009ADD0D /* Products */,
 				953D932F2448CA200060E764 /* Frameworks */,
@@ -93,14 +117,14 @@
 		95B886F524420855009ADD0D /* Cinema */ = {
 			isa = PBXGroup;
 			children = (
+				956D0862248104A1001E64AA /* models */,
+				956D086124810486001E64AA /* helpers */,
+				956D08602481041E001E64AA /* controllers */,
+				956369382474148D00A02252 /* database.xcdatamodeld */,
+				9567A3802445DBCE00CDE79D /* FilmCollectionViewCell.swift */,
 				95B886F624420855009ADD0D /* AppDelegate.swift */,
 				95B886F824420855009ADD0D /* SceneDelegate.swift */,
-				957EFFA02442DBBF000836C3 /* StoreItem.swift */,
-				957EFFA22442DBD8000836C3 /* URLHelper.swift */,
-				957EFFA42442DBFC000836C3 /* StoreItemController.swift */,
 				95B886FC24420855009ADD0D /* Main.storyboard */,
-				9563693B24742C5900A02252 /* filmSearchCollectionViewController.swift */,
-				957EFFA62442DC75000836C3 /* CinemaTableViewController.swift */,
 				95B886FF24420857009ADD0D /* Assets.xcassets */,
 				95B8870124420857009ADD0D /* LaunchScreen.storyboard */,
 				95B8870424420857009ADD0D /* Info.plist */,

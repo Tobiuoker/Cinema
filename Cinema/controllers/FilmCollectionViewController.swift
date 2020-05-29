@@ -102,9 +102,6 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
          let fetchRequest =
            NSFetchRequest<NSManagedObject>(entityName: "Favourite")
 
-//        let appDel:AppDelegate = UIApplication.shared.delegate as! AppDelegate
-//        let context:NSManagedObjectContext = appDel.persistentContainer.viewContext
-
         let managedContextt = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
         
@@ -112,15 +109,7 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
          do {
            var qwe = try managedContext.fetch(fetchRequest)
             filmsFromDB.append(contentsOf: qwe)
-//            for i in filmsFromDB{
-//                if(i.value(forKeyPath: "popularity") as? Double == 997){
-//                    let temp = i as NSManagedObject
-//                    managedContext.delete(temp)
-//                    try managedContext.save()
-//
-//                }
-//            }
-            //print(qwe[0].value(forKeyPath: "title") as? String)
+
          } catch let error as NSError {
            print("Could not fetch. \(error), \(error.userInfo)")
          }
