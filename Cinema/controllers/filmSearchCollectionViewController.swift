@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class filmSearchCollectionViewController: UICollectionViewController, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, MyCellDelegate {
     
@@ -22,6 +23,7 @@ class filmSearchCollectionViewController: UICollectionViewController, UISearchCo
     var counterOfRows = 0
     var allCounterForRows = 0
     var counterBraka = 0
+    var filmsFromDB: [NSManagedObject] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,8 +52,120 @@ class filmSearchCollectionViewController: UICollectionViewController, UISearchCo
     }
     
     func starTapped(cell: FilmCollectionViewCell) {
-        let indexPath = self.collectionView.indexPath(for: cell)
-        print(indexPath!.row, "eto tut")
+        let indexPath = self.collectionView.indexPath(for: cell)!
+                
+                if cell.isFavourite{
+                    cell.isFavourite = true
+                    cell.starButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
+                    save(id: filmsItems[indexPath.row].id, overview: filmsItems[indexPath.row].overview, popularity: filmsItems[indexPath.row].popularity, posterPath: filmsItems[indexPath.row].posterPath ?? "", title: filmsItems[indexPath.row].title)
+                    print("saved")
+                } else{
+                    cell.isFavourite = false
+                    cell.starButton.setImage(UIImage(systemName: "star"), for: .normal)
+                    guard let appDelegate =
+                      UIApplication.shared.delegate as? AppDelegate else {
+                        return
+                    }
+                    
+                    let managedContext =
+                      appDelegate.persistentContainer.viewContext
+                    
+                    for i in filmsFromDB{
+                        if i.value(forKey: "id") as! Int == filmsItems[indexPath.row].id{
+                            managedContext.delete(i as NSManagedObject)
+                            do{
+                                try managedContext.save()
+                            } catch let error as NSError {
+                              print("Error in deleting")
+                            }
+                            
+                        }
+                    }
+                    print("deleted")
+                }
+    }
+    
+    func show(){
+        
+        
+        guard let appDelegate =
+           UIApplication.shared.delegate as? AppDelegate else {
+             return
+         }
+         
+         let managedContext =
+           appDelegate.persistentContainer.viewContext
+         
+         //2
+         let fetchRequest =
+           NSFetchRequest<NSManagedObject>(entityName: "Favourite")
+
+        let managedContextt = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+
+        
+         //3
+         do {
+           var qwe = try managedContext.fetch(fetchRequest)
+            filmsFromDB.append(contentsOf: qwe)
+
+         } catch let error as NSError {
+           print("Could not fetch. \(error), \(error.userInfo)")
+         }
+    }
+    
+    
+    func save(id: Int, overview: String, popularity: Double, posterPath: String, title: String){
+        
+        guard let appDelegate =
+          UIApplication.shared.delegate as? AppDelegate else {
+          return
+        }
+        
+        
+        // 1
+        let managedContext =
+          appDelegate.persistentContainer.viewContext
+        
+        // 2
+        let entity =
+          NSEntityDescription.entity(forEntityName: "Favourite",
+                                     in: managedContext)!
+        
+        let film = NSManagedObject(entity: entity,
+                                     insertInto: managedContext)
+        
+        // 3
+    
+        film.setValue(id, forKeyPath: "id")
+        film.setValue(overview, forKeyPath: "overview")
+        film.setValue(popularity, forKeyPath: "popularity")
+        film.setValue(posterPath, forKeyPath: "posterPath")
+        film.setValue(title, forKeyPath: "title")
+        
+        // 4
+        do {
+          try managedContext.save()
+        } catch let error as NSError {
+          print("Could not save. \(error), \(error.userInfo)")
+        }
+        
+    }
+    
+    
+    func fetchFromSaved(){
+        for i in filmsFromDB{
+            
+            let title = i.value(forKeyPath: "title") as! String
+            let popularity = i.value(forKeyPath: "popularity") as! Double
+            let posterPath = i.value(forKeyPath: "posterPath") as! String
+            let overview = i.value(forKeyPath: "overview") as! String
+            let id = i.value(forKeyPath: "id") as! Int
+            let item = StoreItem(title: title, popularity: popularity, posterPath: posterPath, id: id, overview: overview)
+            self.filmsItems.append(item)
+            
+        }
+        print(filmsFromDB.count)
+        self.collectionView.reloadData()
     }
     
     
@@ -107,7 +221,7 @@ class filmSearchCollectionViewController: UICollectionViewController, UISearchCo
         self.collectionView.reloadData()
         counterOfPages = 1
         fetchItems(query: searchText)
-        
+        show()
         
 //        filtered = filmsItems.filter({ (item) -> Bool in
 //            let countryText: NSString = item as NSString
@@ -203,6 +317,17 @@ class filmSearchCollectionViewController: UICollectionViewController, UISearchCo
         }
         
         cell.delegate = self
+        
+        cell.starButton.setImage(UIImage(systemName: "star"), for: .normal)
+        cell.isFavourite = false
+        for i in filmsFromDB{
+            if(i.value(forKey: "id") as! Int == item.id){
+                print(item.title)
+                cell.starButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
+                cell.isFavourite = true
+            }
+        }
+        
         return cell
     }
     
