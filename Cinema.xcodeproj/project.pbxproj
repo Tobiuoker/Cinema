@@ -44,6 +44,8 @@
 		95B886FF24420857009ADD0D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		95B8870224420857009ADD0D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		95B8870424420857009ADD0D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AC12201914D5DBC2D9247B1A /* Pods-Cinema.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cinema.release.xcconfig"; path = "Target Support Files/Pods-Cinema/Pods-Cinema.release.xcconfig"; sourceTree = "<group>"; };
+		AFDDC93EBBBB4CE471C54631 /* Pods-Cinema.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cinema.debug.xcconfig"; path = "Target Support Files/Pods-Cinema/Pods-Cinema.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0176B72EF25EF58EB2BB573F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AFDDC93EBBBB4CE471C54631 /* Pods-Cinema.debug.xcconfig */,
+				AC12201914D5DBC2D9247B1A /* Pods-Cinema.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		953D932F2448CA200060E764 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +111,7 @@
 				95B886F524420855009ADD0D /* Cinema */,
 				95B886F424420855009ADD0D /* Products */,
 				953D932F2448CA200060E764 /* Frameworks */,
+				0176B72EF25EF58EB2BB573F /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -137,6 +149,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 95B8870724420857009ADD0D /* Build configuration list for PBXNativeTarget "Cinema" */;
 			buildPhases = (
+				9BD9D50122743B68C1CC6DCB /* [CP] Check Pods Manifest.lock */,
 				95B886EF24420855009ADD0D /* Sources */,
 				95B886F024420855009ADD0D /* Frameworks */,
 				95B886F124420855009ADD0D /* Resources */,
@@ -196,6 +209,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9BD9D50122743B68C1CC6DCB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Cinema-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		95B886EF24420855009ADD0D /* Sources */ = {
@@ -354,6 +392,7 @@
 		};
 		95B8870824420857009ADD0D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AFDDC93EBBBB4CE471C54631 /* Pods-Cinema.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -363,6 +402,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = q.Cinema;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -372,6 +412,7 @@
 		};
 		95B8870924420857009ADD0D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AC12201914D5DBC2D9247B1A /* Pods-Cinema.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -381,6 +422,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = q.Cinema;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

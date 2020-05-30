@@ -25,6 +25,8 @@ class filmSearchCollectionViewController: UICollectionViewController, UISearchCo
     var counterBraka = 0
     var filmsFromDB: [NSManagedObject] = []
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

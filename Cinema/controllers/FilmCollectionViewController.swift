@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import  Network
 
 protocol getID{
     func getID(id: Int)
@@ -16,6 +17,7 @@ protocol getID{
 private let reuseIdentifier = "Cell"
 
 class FilmCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, MyCellDelegate {
+    
     
     
     @IBOutlet weak var segmentedControl: UISegmentedControl!
@@ -28,12 +30,35 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
     var counterOfRows = 0
     var allCounterForRows = 0
     var counterBraka = 0
-    var options = ["popular", "top_rated", "Favourite"]
+    var options = ["Popular", "TopRated", "Favourite"]
     
     var filmsFromDB: [NSManagedObject] = []
+    var filmsFromDBFav: [NSManagedObject] = []
+    
+    let monitor = NWPathMonitor()
+    let queue = DispatchQueue(label: "InternetConnectionMonitor")
+    
+    var hasInternet = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        monitor.pathUpdateHandler = { pathUpdateHandler in
+                if pathUpdateHandler.status == .satisfied {
+                    print("Internet connection is on.")
+                    DispatchQueue.main.async {
+                        self.deleting(type: "Popular")
+                    }
+                    print("opa")
+                } else {
+                    print("There's no internet connection.")
+                    self.hasInternet = false
+                }
+            }
+
+            monitor.start(queue: queue)
+        
+        
         
 //        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
@@ -42,8 +67,13 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
         layout.itemSize = CGSize(width: width, height: width + 100)
         // Do any additional setup after loading the view.
         
-        fetchItems()
+        
         show()
+        if hasInternet{
+            fetchItems()
+        } else {
+            fetchFromSaved(filmsFromDB: filmsFromDB)
+        }
         
         
 //        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)
@@ -57,7 +87,7 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
         if cell.isFavourite{
             cell.isFavourite = true
             cell.starButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
-            save(id: filmsItems[indexPath.row].id, overview: filmsItems[indexPath.row].overview, popularity: filmsItems[indexPath.row].popularity, posterPath: filmsItems[indexPath.row].posterPath ?? "", title: filmsItems[indexPath.row].title)
+            save(id: filmsItems[indexPath.row].id, overview: filmsItems[indexPath.row].overview, popularity: filmsItems[indexPath.row].popularity, posterPath: filmsItems[indexPath.row].posterPath ?? "", title: filmsItems[indexPath.row].title, type: "Favourite")
             print("saved")
         } else{
             cell.isFavourite = false
@@ -70,11 +100,12 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
             let managedContext =
               appDelegate.persistentContainer.viewContext
             
-            for i in filmsFromDB{
+            for i in filmsFromDBFav{
                 if i.value(forKey: "id") as! Int == filmsItems[indexPath.row].id{
                     managedContext.delete(i as NSManagedObject)
                     do{
                         try managedContext.save()
+                        print("rilUdalil")
                     } catch let error as NSError {
                       print("Error in deleting")
                     }
@@ -88,7 +119,7 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
 
     
     func show(){
-        
+        let mediaType = options[segmentedControl.selectedSegmentIndex]
         
         guard let appDelegate =
            UIApplication.shared.delegate as? AppDelegate else {
@@ -99,25 +130,52 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
            appDelegate.persistentContainer.viewContext
          
          //2
-         let fetchRequest =
-           NSFetchRequest<NSManagedObject>(entityName: "Favourite")
-
+        var fetchRequest: NSFetchRequest<NSManagedObject>?
+        if mediaType == "Popular"{
+            
+            fetchRequest =
+            NSFetchRequest<NSManagedObject>(entityName: "Popular")
+            let managedContextt = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+            do {
+                let qwe = try managedContext.fetch(fetchRequest!)
+               filmsFromDB.append(contentsOf: qwe)
+                print(filmsFromDB.count)
+            } catch let error as NSError {
+              print("Could not fetch. \(error), \(error.userInfo)")
+            }
+            
+        } else if mediaType == "TopRated"{
+            
+            fetchRequest =
+            NSFetchRequest<NSManagedObject>(entityName: "TopRated")
+            do {
+               let qwe = try managedContext.fetch(fetchRequest!)
+               filmsFromDB.append(contentsOf: qwe)
+                print(filmsFromDB.count)
+            } catch let error as NSError {
+              print("Could not fetch. \(error), \(error.userInfo)")
+            }
+        }
+         
+        fetchRequest =
+        NSFetchRequest<NSManagedObject>(entityName: "Favourite")
         let managedContextt = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
         
          //3
          do {
-           var qwe = try managedContext.fetch(fetchRequest)
-            filmsFromDB.append(contentsOf: qwe)
-
+            let qwe = try managedContext.fetch(fetchRequest!)
+            filmsFromDBFav.append(contentsOf: qwe)
          } catch let error as NSError {
            print("Could not fetch. \(error), \(error.userInfo)")
          }
     }
     
     
-    func save(id: Int, overview: String, popularity: Double, posterPath: String, title: String){
+    func save(id: Int, overview: String, popularity: Double, posterPath: String, title: String, type: String){
         
+        
+        let mediaType = options[segmentedControl.selectedSegmentIndex]
         guard let appDelegate =
           UIApplication.shared.delegate as? AppDelegate else {
           return
@@ -129,11 +187,55 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
           appDelegate.persistentContainer.viewContext
         
         // 2
-        let entity =
-          NSEntityDescription.entity(forEntityName: "Favourite",
-                                     in: managedContext)!
+//        var entity =
+//          NSEntityDescription.entity(forEntityName: "Favourite",
+//                                     in: managedContext)!
+        var entity: NSEntityDescription?
         
-        let film = NSManagedObject(entity: entity,
+//        if mediaType == "Favourite"{
+        if type != "Favourite"{
+//            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: type)
+//            let request = NSBatchDeleteRequest(fetchRequest: fetch)
+//
+//            do {
+//                let result = try managedContext.execute(request)
+//            } catch let error as NSError {
+//                // TODO: handle the error
+//            }
+            
+        }
+            
+            entity =
+            NSEntityDescription.entity(forEntityName: type,
+                                       in: managedContext)!
+//            print("chetam")
+            
+            
+//        } else if mediaType == "popular"{
+//            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Popular")
+//            let request = NSBatchDeleteRequest(fetchRequest: fetch)
+//
+//            do {
+//                let result = try managedContext.execute(request)
+//            } catch let error as NSError {
+//                // TODO: handle the error
+//            }
+//
+//
+//            entity =
+//            NSEntityDescription.entity(forEntityName: "Favourite",
+//                                       in: managedContext)!
+//
+//        } else if mediaType == "top_rated"{
+//
+//            entity =
+//            NSEntityDescription.entity(forEntityName: "Favourite",
+//                                       in: managedContext)!
+//
+//        }
+        
+        
+        let film = NSManagedObject(entity: entity!,
                                      insertInto: managedContext)
         
         // 3
@@ -153,8 +255,18 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
         
     }
     
+//    func savePopular(){
+//        var cell = self.collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as! FilmCollectionViewCell
+//        print(cell.cellFilmImage.image!)
+//
+//    }
+//
+//    func saveTopRated(){
+//
+//    }
     
-    func fetchFromSaved(){
+    func fetchFromSaved(filmsFromDB: [NSManagedObject]){
+        
         for i in filmsFromDB{
             
             let title = i.value(forKeyPath: "title") as! String
@@ -166,28 +278,73 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
             self.filmsItems.append(item)
             
         }
-        print(filmsFromDB.count)
+        
         self.collectionView.reloadData()
     }
     
+    func deleting(type: String){
+        
+        guard let appDelegate =
+          UIApplication.shared.delegate as? AppDelegate else {
+          return
+        }
+        
+        
+        // 1
+        let managedContext =
+          appDelegate.persistentContainer.viewContext
+        
+        
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: type)
+        let request = NSBatchDeleteRequest(fetchRequest: fetch)
+
+        do {
+            let result = try managedContext.execute(request)
+        } catch let error as NSError {
+            // TODO: handle the error
+        }
+        
+    }
     
     @IBAction func segmentedControlChanged(_ sender: Any) {
         self.filmsItems = []
         self.filmsFromDB = []
+        self.filmsFromDBFav = []
+        
         self.collectionView.reloadData()
         counterOfPages = 1
         let mediaType = options[segmentedControl.selectedSegmentIndex]
-        show()
-        if mediaType == "Favourite"{
-            fetchFromSaved()
-        } else {
-            fetchItems()
+
+        if mediaType != "Favourite", hasInternet{
+            deleting(type: mediaType)
         }
+        
+        show()
+        if hasInternet{
+            if mediaType == "Favourite"{
+                fetchFromSaved(filmsFromDB: filmsFromDBFav)
+            } else {
+                fetchItems()
+            }
+        } else {
+            if mediaType == "Favourite"{
+                fetchFromSaved(filmsFromDB: filmsFromDBFav)
+            } else {
+                fetchFromSaved(filmsFromDB: filmsFromDB)
+            }
+        }
+        
         
     }
     func fetchItems(){
         
         let mediaType = options[segmentedControl.selectedSegmentIndex]
+        var type = ""
+        if mediaType == "Popular"{
+            type = "popular"
+        } else if mediaType == "TopRated"{
+            type = "top_rated"
+        }
         
         let query = [
                     "api_key":"1fc2dab4bce286017391d10ae5a2a0df",
@@ -196,17 +353,15 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
                 ]
                 counterOfPages+=1
                 
-        //        print(query)
-        //        print(query["page"] = "3")
-        //        print(query)
-                    storeItem.fetchItems(type: mediaType, matching: query) { (films) in
+                    storeItem.fetchItems(type: type, matching: query) { (films) in
                     if let films = films{
                         DispatchQueue.main.async {
                             self.filmsItems.append(contentsOf: films)
+                            for i in self.filmsItems{
+                                self.save(id: i.id, overview: i.overview, popularity: i.popularity, posterPath: i.posterPath ?? "", title: i.title, type: mediaType)
+                            }
                             print("v itoge vsego", self.filmsItems.count)
                             self.collectionView.reloadData()
-        //                    self.tableView.beginUpdates()
-        //                    self.tableView.endUpdates()
                         }
                     }
         //            else {
@@ -282,21 +437,23 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "filmCell", for: indexPath) as! FilmCollectionViewCell
         
-//        let mediaType = options[segmentedControl.selectedSegmentIndex]
-//        if mediaType == "Favourite"{
-//            let item = filmsFromDB[indexPath.row]
-//        } else {
+        let mediaType = options[segmentedControl.selectedSegmentIndex]
+        if mediaType != "Favourite"{
             if(indexPath.row == filmsItems.count-10){
                 fetchItems()
             }
-            let item = filmsItems[indexPath.row]
-//        }
+        }
         
+            
+            let item = filmsItems[indexPath.row]
+            
+            
+        //print(filmsItems.count)
         
         
         var newImage:UIImage = UIImage(named: "Solid_gray")!
         
-        if let imgURL = item.posterPath{
+        if let imgURL = item.posterPath, hasInternet{
             storeItem.fetchImage(url: imgURL) { (image) in
                 if let image = image{
                     DispatchQueue.main.async {
@@ -314,23 +471,15 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
         cell.delegate = self
         cell.starButton.setImage(UIImage(systemName: "star"), for: .normal)
         cell.isFavourite = false
-        for i in filmsFromDB{
+        for i in filmsFromDBFav{
             if(i.value(forKey: "id") as! Int == item.id){
                 print(item.title)
                 cell.starButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
                 cell.isFavourite = true
             }
+            
         }
-        
-//        for i in filmsFromDB{
-//                        if(i.value(forKeyPath: "popularity") as? Double == 997){
-//                            let temp = i as NSManagedObject
-//                            managedContext.delete(temp)
-//                            try managedContext.save()
-//
-//                        }
-//                    }
-        
+    
         return cell
     }
 
