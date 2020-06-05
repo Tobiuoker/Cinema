@@ -224,13 +224,6 @@ class filmSearchCollectionViewController: UICollectionViewController, UISearchCo
         counterOfPages = 1
         fetchItems(query: searchText)
         show()
-        
-//        filtered = filmsItems.filter({ (item) -> Bool in
-//            let countryText: NSString = item as NSString
-//
-//            return (countryText.range(of: searchString!, options: NSString.CompareOptions.caseInsensitive).location) != NSNotFound
-//        })
-//        print(searchString!)
 
         collectionView.reloadData()
     }
@@ -247,33 +240,7 @@ class filmSearchCollectionViewController: UICollectionViewController, UISearchCo
         self.dismiss(animated: true, completion: nil)
     }
     
-//
-//    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-//        searchActive = true
-//        collectionView.reloadData()
-//    }
-//
-//
-//    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
-//        if !searchActive {
-//            searchActive = true
-//            collectionView.reloadData()
-//        }
-//
-//        searchController.searchBar.resignFirstResponder()
-//    }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -282,16 +249,6 @@ class filmSearchCollectionViewController: UICollectionViewController, UISearchCo
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        
-//        if searchActive {
-//            return filtered.count
-//        }
-//        else
-//        {
-//        return filmsItems.count
-//        }
-        
         return filmsItems.count
     }
 
@@ -334,36 +291,5 @@ class filmSearchCollectionViewController: UICollectionViewController, UISearchCo
     }
     
     
-    
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
 
 }

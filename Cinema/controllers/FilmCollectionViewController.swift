@@ -112,6 +112,7 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
                     
                 }
             }
+//            self.collectionView.reloadData()
             print("deleted")
         }
         
@@ -182,59 +183,16 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
         }
         
         
-        // 1
+        
         let managedContext =
           appDelegate.persistentContainer.viewContext
         
-        // 2
-//        var entity =
-//          NSEntityDescription.entity(forEntityName: "Favourite",
-//                                     in: managedContext)!
+
         var entity: NSEntityDescription?
         
-//        if mediaType == "Favourite"{
-        if type != "Favourite"{
-//            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: type)
-//            let request = NSBatchDeleteRequest(fetchRequest: fetch)
-//
-//            do {
-//                let result = try managedContext.execute(request)
-//            } catch let error as NSError {
-//                // TODO: handle the error
-//            }
-            
-        }
-            
             entity =
             NSEntityDescription.entity(forEntityName: type,
                                        in: managedContext)!
-//            print("chetam")
-            
-            
-//        } else if mediaType == "popular"{
-//            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Popular")
-//            let request = NSBatchDeleteRequest(fetchRequest: fetch)
-//
-//            do {
-//                let result = try managedContext.execute(request)
-//            } catch let error as NSError {
-//                // TODO: handle the error
-//            }
-//
-//
-//            entity =
-//            NSEntityDescription.entity(forEntityName: "Favourite",
-//                                       in: managedContext)!
-//
-//        } else if mediaType == "top_rated"{
-//
-//            entity =
-//            NSEntityDescription.entity(forEntityName: "Favourite",
-//                                       in: managedContext)!
-//
-//        }
-        
-        
         let film = NSManagedObject(entity: entity!,
                                      insertInto: managedContext)
         
@@ -364,22 +322,10 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
                             self.collectionView.reloadData()
                         }
                     }
-        //            else {
-        //                print("vozvrat i na straince ", self.counterOfPages-1)
-        ////                self.counterOfPages+=1
-        //                self.fetchItems()
-        //            }
+        
                 }
     }
-    
-//    func prepare(segue: UIStoryboardSegue){
-//        if segue.identifier == "filmDetail"{
-//            let destination = segue.destination as? filmDetailViewController
-//            let index = collectionView.indexPathsForSelectedItems!.first
-////            collectionView.cellForItem(at: index!).
-//        }
-//    }
-//
+
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let indexPath = collectionView.indexPathsForSelectedItems?.first,
             let cell = collectionView.cellForItem(at: indexPath) as? FilmCollectionViewCell,
@@ -403,19 +349,7 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
     
     
 
-    /*
-     
-     
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -424,14 +358,9 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-//        let mediaType = options[segmentedControl.selectedSegmentIndex]
-//        if mediaType == "Favourite"{
-//            return filmsFromDB.count
-//        } else {
-            return filmsItems.count
-//        }
-        
+
+        return filmsItems.count
+
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -445,11 +374,8 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
         }
         
             
-            let item = filmsItems[indexPath.row]
+        let item = filmsItems[indexPath.row]
             
-            
-        //print(filmsItems.count)
-        
         
         var newImage:UIImage = UIImage(named: "Solid_gray")!
         
@@ -482,36 +408,5 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
     
         return cell
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
 
 }
