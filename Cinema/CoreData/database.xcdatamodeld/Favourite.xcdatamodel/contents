@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19F96" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19F101" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Favourite" representedClassName="Favourite" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="overview" optional="YES" attributeType="String"/>
@@ -22,8 +22,8 @@
         <attribute name="title" optional="YES" attributeType="String"/>
     </entity>
     <elements>
-        <element name="Favourite" positionX="-63" positionY="-18" width="128" height="118"/>
+        <element name="Favourite" positionX="102.0234375" positionY="21.1171875" width="128" height="118"/>
         <element name="Popular" positionX="-63" positionY="18" width="128" height="118"/>
-        <element name="TopRated" positionX="-54" positionY="27" width="128" height="118"/>
+        <element name="TopRated" positionX="11.09375" positionY="-114.59375" width="112.625" height="118"/>
     </elements>
 </model>

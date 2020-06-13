@@ -25,6 +25,7 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
     var idishka: Int = 0
     var filmDetail = filmDetailViewController()
     var storeItem = StoreItemController()
+    var manipulation = Manipulation()
     var filmsItems: [StoreItem] = []
     var counterOfPages = 1
     var counterOfRows = 0
@@ -87,37 +88,47 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
         if cell.isFavourite{
             cell.isFavourite = true
             cell.starButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
-            save(id: filmsItems[indexPath.row].id, overview: filmsItems[indexPath.row].overview, popularity: filmsItems[indexPath.row].popularity, posterPath: filmsItems[indexPath.row].posterPath ?? "", title: filmsItems[indexPath.row].title, type: "Favourite")
+            manipulation.save(id: filmsItems[indexPath.row].id, overview: filmsItems[indexPath.row].overview, popularity: filmsItems[indexPath.row].popularity, posterPath: filmsItems[indexPath.row].posterPath ?? "", title: filmsItems[indexPath.row].title, type: "Favourite")
             print("saved")
         } else{
             cell.isFavourite = false
             cell.starButton.setImage(UIImage(systemName: "star"), for: .normal)
-            guard let appDelegate =
-              UIApplication.shared.delegate as? AppDelegate else {
-                return
-            }
             
-            let managedContext =
-              appDelegate.persistentContainer.viewContext
+            manipulation.delete(id: filmsItems[indexPath.row].id)
+//            guard let appDelegate =
+//              UIApplication.shared.delegate as? AppDelegate else {
+//                return
+//            }
+//
+//            let managedContext =
+//              appDelegate.persistentContainer.viewContext
+//
+//            for i in filmsFromDBFav{
+//                if i.value(forKey: "id") as! Int == filmsItems[indexPath.row].id{
+//                    managedContext.delete(i as NSManagedObject)
+//                    do{
+//                        try managedContext.save()
+//                        print("rilUdalil")
+//                    } catch let error as NSError {
+//                      print("Error in deleting")
+//                    }
+//
+//                }
+//            }
             
-            for i in filmsFromDBFav{
-                if i.value(forKey: "id") as! Int == filmsItems[indexPath.row].id{
-                    managedContext.delete(i as NSManagedObject)
-                    do{
-                        try managedContext.save()
-                        print("rilUdalil")
-                    } catch let error as NSError {
-                      print("Error in deleting")
-                    }
-                    
-                }
-            }
+            
 //            self.collectionView.reloadData()
             print("deleted")
         }
         
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        //dodelat update favourite (obnovlenie pri smene tab)
+        filmsFromDBFav = []
+        show()
+        collectionView.reloadData()
+    }
     
     func show(){
         let mediaType = options[segmentedControl.selectedSegmentIndex]
@@ -135,8 +146,8 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
         if mediaType == "Popular"{
             
             fetchRequest =
-            NSFetchRequest<NSManagedObject>(entityName: "Popular")
-            let managedContextt = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+                NSFetchRequest<NSManagedObject>(entityName: "Popular")
+            
             do {
                 let qwe = try managedContext.fetch(fetchRequest!)
                filmsFromDB.append(contentsOf: qwe)
@@ -173,45 +184,7 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
     }
     
     
-    func save(id: Int, overview: String, popularity: Double, posterPath: String, title: String, type: String){
-        
-        
-        let mediaType = options[segmentedControl.selectedSegmentIndex]
-        guard let appDelegate =
-          UIApplication.shared.delegate as? AppDelegate else {
-          return
-        }
-        
-        
-        
-        let managedContext =
-          appDelegate.persistentContainer.viewContext
-        
-
-        var entity: NSEntityDescription?
-        
-            entity =
-            NSEntityDescription.entity(forEntityName: type,
-                                       in: managedContext)!
-        let film = NSManagedObject(entity: entity!,
-                                     insertInto: managedContext)
-        
-        // 3
     
-        film.setValue(id, forKeyPath: "id")
-        film.setValue(overview, forKeyPath: "overview")
-        film.setValue(popularity, forKeyPath: "popularity")
-        film.setValue(posterPath, forKeyPath: "posterPath")
-        film.setValue(title, forKeyPath: "title")
-        
-        // 4
-        do {
-          try managedContext.save()
-        } catch let error as NSError {
-          print("Could not save. \(error), \(error.userInfo)")
-        }
-        
-    }
     
 //    func savePopular(){
 //        var cell = self.collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as! FilmCollectionViewCell
@@ -316,7 +289,7 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
                         DispatchQueue.main.async {
                             self.filmsItems.append(contentsOf: films)
                             for i in self.filmsItems{
-                                self.save(id: i.id, overview: i.overview, popularity: i.popularity, posterPath: i.posterPath ?? "", title: i.title, type: mediaType)
+                                self.manipulation.save(id: i.id, overview: i.overview, popularity: i.popularity, posterPath: i.posterPath ?? "", title: i.title, type: mediaType)
                             }
                             print("v itoge vsego", self.filmsItems.count)
                             self.collectionView.reloadData()
@@ -408,5 +381,6 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
     
         return cell
     }
+    
 
 }

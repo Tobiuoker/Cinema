@@ -42,6 +42,7 @@ class StoreItemController{
             }
         }
         task.resume()
+        
     }
     
     func fetchVideo(id:Int, matching query:[String:String], completion: @escaping ([VideoKey]?) -> Void){

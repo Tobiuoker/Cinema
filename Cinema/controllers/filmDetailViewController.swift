@@ -58,6 +58,13 @@ class filmDetailViewController: UIViewController {
         fetchCrewMembers()
     }
     
+    
+    
+    @IBAction func starTapped(_ sender: Any) {
+        
+    }
+    
+    
     func fetchFilmDetails(){
         storeItem.fetchFilmDetails(id: id!, matching: query) { (film) in
             if let film = film{
@@ -132,7 +139,6 @@ class filmDetailViewController: UIViewController {
                         }
                     }
                     
-//                    while(self.counter<3){
                         for i in 0...cast.cast.count{
                             //sdelat optional!!!!!!!!!!!!!!!!
                             if cast.cast[i].profilePath != nil{
@@ -143,7 +149,6 @@ class filmDetailViewController: UIViewController {
                                 break
                             }
                         }
-//                    }
                     
                     self.storeItem.fetchImage(url: cast.cast[self.validPhotos[0]].profilePath!) { (image) in
                         DispatchQueue.main.async {
@@ -160,7 +165,6 @@ class filmDetailViewController: UIViewController {
                             
                         }
                     }
-//                    if let qwe = cast.cast[2].profilePath{
                     self.storeItem.fetchImage(url:cast.cast[self.validPhotos[2]].profilePath!) { (image) in
                             DispatchQueue.main.async {
                                 self.thirdActor.layer.cornerRadius = 30
@@ -168,18 +172,6 @@ class filmDetailViewController: UIViewController {
                                 
                             }
                         }
-//                    }
-//                    else {
-//                        self.storeItem.fetchImage(url:cast.cast[3].profilePath!) { (image) in
-//                            DispatchQueue.main.async {
-//                                self.thirdActor.layer.cornerRadius = 30
-//                                self.thirdActor.image = image
-//
-//                            }
-//                        }
-//                    }
-                    
-                    
                     self.firstActorName.text = cast.cast[self.validPhotos[0]].name
                     self.secondActorName.text = cast.cast[self.validPhotos[1]].name
                     self.thirdActorName.text = cast.cast[self.validPhotos[2]].name
@@ -218,33 +210,8 @@ class filmDetailViewController: UIViewController {
         guard let youtubeURL = URL(string: "https://www.youtube.com/embed/\(videoID)?playsinline=1") else {
         return
         }
-//        let configuration = WKWebViewConfiguration()
-//        configuration.allowsInlineMediaPlayback = true
-//        configuration.mediaTypesRequiringUserActionForPlayback = .audio
-//        let newweb = WKWebView(frame: .zero, configuration: configuration)
+        
         videoWebView.configuration.allowsInlineMediaPlayback = true
         videoWebView.load(URLRequest(url: youtubeURL))
     }
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        print("zad=shel")
-//        if segue.identifier == "filmDetail"{
-//            let destin = segue.destination as? FilmCollectionViewController
-//            destin?.delegate = self
-//        }
-//    }
-//
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
