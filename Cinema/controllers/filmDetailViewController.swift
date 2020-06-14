@@ -71,6 +71,7 @@ class filmDetailViewController: UIViewController {
     
     
     @IBAction func starTapped(_ sender: Any) {
+        
         if !manipulation.find(id: id!){
             starButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
             manipulation.save(id: id!, overview: descrFilmTitle.text!, popularity: Double(popularity), posterPath: poster, title: filmTitle.text!, type: "Favourite")
