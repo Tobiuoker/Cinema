@@ -37,9 +37,13 @@ class filmDetailViewController: UIViewController {
     @IBOutlet weak var firstActorName: UILabel!
     @IBOutlet weak var secondActorName: UILabel!
     @IBOutlet weak var thirdActorName: UILabel!
+    @IBOutlet weak var starButton: UIButton!
+    var poster = ""
+    var popularity: Double = 1
     var cast: [CastMembers] = []
     var filmImage: UIImage?
     var filmName = ""
+    var manipulation = Manipulation()
     @IBOutlet weak var filmOverview: UIView!
     let query = [
         "api_key": "1fc2dab4bce286017391d10ae5a2a0df",
@@ -49,6 +53,12 @@ class filmDetailViewController: UIViewController {
     @IBOutlet weak var videoView: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if manipulation.find(id: id!){
+            starButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
+        } else {
+            starButton.setImage(UIImage(systemName: "star"), for: .normal)
+        }
         
         fetchVideo()
         fetchFilmDetails()
@@ -61,7 +71,13 @@ class filmDetailViewController: UIViewController {
     
     
     @IBAction func starTapped(_ sender: Any) {
-        
+        if !manipulation.find(id: id!){
+            starButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
+            manipulation.save(id: id!, overview: descrFilmTitle.text!, popularity: Double(popularity), posterPath: poster, title: filmTitle.text!, type: "Favourite")
+        } else {
+            starButton.setImage(UIImage(systemName: "star"), for: .normal)
+            manipulation.delete(id: id!)
+        }
     }
     
     
@@ -92,7 +108,12 @@ class filmDetailViewController: UIViewController {
                     self.voteAndPopularity.text = "\(film.votes) / 10 (\(Double(round(10*film.popularity)/10)))"
                     self.descrFilmTitle.text = film.title
                     
+                    self.popularity = film.popularity
+                    
+                    self.poster = film.posterPath ?? ""
+                    
                     if let img = film.posterPath{
+                        
                         self.storeItem.fetchImage(url: img) { (image) in
                             if let image = image{
                                 DispatchQueue.main.async {

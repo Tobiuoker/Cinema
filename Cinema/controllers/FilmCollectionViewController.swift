@@ -41,8 +41,12 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
     
     var hasInternet = true
     
+    var mediaType = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        mediaType = options[segmentedControl.selectedSegmentIndex]
         
         monitor.pathUpdateHandler = { pathUpdateHandler in
                 if pathUpdateHandler.status == .satisfied {
@@ -95,43 +99,27 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
             cell.starButton.setImage(UIImage(systemName: "star"), for: .normal)
             
             manipulation.delete(id: filmsItems[indexPath.row].id)
-//            guard let appDelegate =
-//              UIApplication.shared.delegate as? AppDelegate else {
-//                return
-//            }
-//
-//            let managedContext =
-//              appDelegate.persistentContainer.viewContext
-//
-//            for i in filmsFromDBFav{
-//                if i.value(forKey: "id") as! Int == filmsItems[indexPath.row].id{
-//                    managedContext.delete(i as NSManagedObject)
-//                    do{
-//                        try managedContext.save()
-//                        print("rilUdalil")
-//                    } catch let error as NSError {
-//                      print("Error in deleting")
-//                    }
-//
-//                }
-//            }
-            
             
 //            self.collectionView.reloadData()
             print("deleted")
         }
-        
+        if mediaType == "Favourite"{
+//            collectionView.reloadData()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         //dodelat update favourite (obnovlenie pri smene tab)
-        filmsFromDBFav = []
-        show()
-        collectionView.reloadData()
+        if mediaType == "Favourite"{
+            filmsFromDBFav = []
+            filmsItems = []
+            show()
+            fetchFromSaved(filmsFromDB: filmsFromDBFav)
+            collectionView.reloadData()
+        }
     }
     
     func show(){
-        let mediaType = options[segmentedControl.selectedSegmentIndex]
         
         guard let appDelegate =
            UIApplication.shared.delegate as? AppDelegate else {
@@ -238,13 +226,13 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
     }
     
     @IBAction func segmentedControlChanged(_ sender: Any) {
+        mediaType = options[segmentedControl.selectedSegmentIndex]
         self.filmsItems = []
         self.filmsFromDB = []
         self.filmsFromDBFav = []
         
         self.collectionView.reloadData()
         counterOfPages = 1
-        let mediaType = options[segmentedControl.selectedSegmentIndex]
 
         if mediaType != "Favourite", hasInternet{
             deleting(type: mediaType)
@@ -269,7 +257,6 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
     }
     func fetchItems(){
         
-        let mediaType = options[segmentedControl.selectedSegmentIndex]
         var type = ""
         if mediaType == "Popular"{
             type = "popular"
@@ -289,7 +276,7 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
                         DispatchQueue.main.async {
                             self.filmsItems.append(contentsOf: films)
                             for i in self.filmsItems{
-                                self.manipulation.save(id: i.id, overview: i.overview, popularity: i.popularity, posterPath: i.posterPath ?? "", title: i.title, type: mediaType)
+                                self.manipulation.save(id: i.id, overview: i.overview, popularity: i.popularity, posterPath: i.posterPath ?? "", title: i.title, type: self.mediaType)
                             }
                             print("v itoge vsego", self.filmsItems.count)
                             self.collectionView.reloadData()
@@ -339,7 +326,6 @@ class FilmCollectionViewController: UICollectionViewController, UICollectionView
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "filmCell", for: indexPath) as! FilmCollectionViewCell
         
-        let mediaType = options[segmentedControl.selectedSegmentIndex]
         if mediaType != "Favourite"{
             if(indexPath.row == filmsItems.count-10){
                 fetchItems()

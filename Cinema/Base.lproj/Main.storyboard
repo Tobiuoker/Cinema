@@ -540,6 +540,7 @@
                         <outlet property="genre3" destination="RVy-3T-QCx" id="Sue-9a-Am9"/>
                         <outlet property="secondActor" destination="alB-jF-gmV" id="ORA-Je-eMj"/>
                         <outlet property="secondActorName" destination="Rf1-d9-WjO" id="Lbk-Yq-HGJ"/>
+                        <outlet property="starButton" destination="Jv5-nE-iJE" id="gkP-Hm-vV9"/>
                         <outlet property="thirdActor" destination="066-qA-jaE" id="3PN-JL-E96"/>
                         <outlet property="thirdActorName" destination="L6n-IP-1Lv" id="NlQ-yy-h0D"/>
                         <outlet property="videoView" destination="VFe-9p-W8f" id="Tcc-lU-AB4"/>

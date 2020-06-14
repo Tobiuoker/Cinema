@@ -73,4 +73,27 @@ class Manipulation{
             fatalError("\(error)")
         }
     }
+    
+    func find(id: Int) -> Bool{
+        guard let appDelegate =
+          UIApplication.shared.delegate as? AppDelegate else {
+            return false
+        }
+        let context = appDelegate.persistentContainer.viewContext
+        let entityDescription = NSEntityDescription.entity(forEntityName: "Favourite", in: context)
+        
+        let request = NSFetchRequest<NSFetchRequestResult>()
+        request.entity = entityDescription
+        request.predicate = NSPredicate(format: "id == \(id)")
+        do {
+            let objects = try context.fetch(request)
+            if objects.count == 1{
+                return true
+            }
+        } catch {
+            fatalError("\(error)")
+        }
+        return false
+    }
+    
 }
