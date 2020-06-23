@@ -33,8 +33,8 @@ struct StoreItem: Codable{
     var title: String
 //    var originalTitle: String
 //    var originalLanguage:String
-    var popularity: Double
     var posterPath: String?
+    var popularity: Double
     var id: Int
 //    var backdropPath: URL
     var overview: String

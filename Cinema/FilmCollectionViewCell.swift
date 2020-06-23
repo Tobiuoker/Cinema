@@ -36,6 +36,10 @@ class FilmCollectionViewCell: UICollectionViewCell {
         starButton.tintColor = UIColor.yellow
     }
     
+    override func prepareForReuse() {
+        cellFilmImage.image = nil
+    }
+    
     func update(title: String, popularity: String, image: UIImage){
         cellFilmImage.image = image
         cellFilmPopularity.text = popularity
