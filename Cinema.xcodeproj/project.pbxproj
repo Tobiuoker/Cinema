@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		95095410244C97B1003F1560 /* fullCrewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9509540F244C97B1003F1560 /* fullCrewTableViewController.swift */; };
-		95095414244D8AED003F1560 /* itachi-alt.png in Resources */ = {isa = PBXBuildFile; fileRef = 95095413244D8AED003F1560 /* itachi-alt.png */; };
 		953D93312448CA200060E764 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 953D93302448CA200060E764 /* WebKit.framework */; };
 		9563693A2474148D00A02252 /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 956369382474148D00A02252 /* database.xcdatamodeld */; };
 		9563693C24742C5900A02252 /* filmSearchCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9563693B24742C5900A02252 /* filmSearchCollectionViewController.swift */; };
@@ -28,7 +27,6 @@
 
 /* Begin PBXFileReference section */
 		9509540F244C97B1003F1560 /* fullCrewTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fullCrewTableViewController.swift; sourceTree = "<group>"; };
-		95095413244D8AED003F1560 /* itachi-alt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "itachi-alt.png"; path = "../../../../Downloads/itachi-alt.png"; sourceTree = "<group>"; };
 		953D93302448CA200060E764 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		956369392474148D00A02252 /* Favourite.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Favourite.xcdatamodel; sourceTree = "<group>"; };
 		9563693B24742C5900A02252 /* filmSearchCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filmSearchCollectionViewController.swift; sourceTree = "<group>"; };
@@ -148,7 +146,6 @@
 				95B886FF24420857009ADD0D /* Assets.xcassets */,
 				95B8870124420857009ADD0D /* LaunchScreen.storyboard */,
 				95B8870424420857009ADD0D /* Info.plist */,
-				95095413244D8AED003F1560 /* itachi-alt.png */,
 			);
 			path = Cinema;
 			sourceTree = "<group>";
@@ -213,7 +210,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				95B8870324420857009ADD0D /* LaunchScreen.storyboard in Resources */,
-				95095414244D8AED003F1560 /* itachi-alt.png in Resources */,
 				95B8870024420857009ADD0D /* Assets.xcassets in Resources */,
 				95B886FE24420855009ADD0D /* Main.storyboard in Resources */,
 			);
