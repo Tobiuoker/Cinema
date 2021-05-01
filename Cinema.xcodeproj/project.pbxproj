@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12DD9BB7263D5ECD00FAE2C4 /* NewFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12DD9BB6263D5ECD00FAE2C4 /* NewFile.swift */; };
 		95095410244C97B1003F1560 /* fullCrewTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9509540F244C97B1003F1560 /* fullCrewTableViewController.swift */; };
 		953D93312448CA200060E764 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 953D93302448CA200060E764 /* WebKit.framework */; };
 		9563693A2474148D00A02252 /* database.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 956369382474148D00A02252 /* database.xcdatamodeld */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		12DD9BB6263D5ECD00FAE2C4 /* NewFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFile.swift; sourceTree = "<group>"; };
 		9509540F244C97B1003F1560 /* fullCrewTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fullCrewTableViewController.swift; sourceTree = "<group>"; };
 		953D93302448CA200060E764 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		956369392474148D00A02252 /* Favourite.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Favourite.xcdatamodel; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				95B886FF24420857009ADD0D /* Assets.xcassets */,
 				95B8870124420857009ADD0D /* LaunchScreen.storyboard */,
 				95B8870424420857009ADD0D /* Info.plist */,
+				12DD9BB6263D5ECD00FAE2C4 /* NewFile.swift */,
 			);
 			path = Cinema;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 				95C40A6B2494D3A000469CDD /* Utilities.swift in Sources */,
 				95B886F724420855009ADD0D /* AppDelegate.swift in Sources */,
 				9567A3812445DBCE00CDE79D /* FilmCollectionViewCell.swift in Sources */,
+				12DD9BB7263D5ECD00FAE2C4 /* NewFile.swift in Sources */,
 				95095410244C97B1003F1560 /* fullCrewTableViewController.swift in Sources */,
 				957EFFA12442DBBF000836C3 /* StoreItem.swift in Sources */,
 				95B886F924420855009ADD0D /* SceneDelegate.swift in Sources */,
